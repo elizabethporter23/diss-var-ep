@@ -14,10 +14,10 @@ summary_dir: results
 scenario:
   simpl: ['']
   ll: ['copt']
-  clusters: [5]
+  clusters: [16]
   opts: [Co2L-1H]
 
-countries: ['DE']
+countries: ['GB']
 
 snapshots:
   start: "2013-01-01"
@@ -42,13 +42,13 @@ electricity:
   extendable_carriers:
     Generator: []
     StorageUnit: [] # battery, H2
-    Store: [battery, H2, gravitricity] 
+    Store: [battery, H2, gravitricity, ptes, vrfb] 
     Link: []
 
   max_hours:
     battery: 6
     H2: 168
-    gravitricity: 2.4
+    gravitricity: 2.44
     vrfb: 6
     ptes: 10
 
