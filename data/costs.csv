@@ -199,11 +199,11 @@ Gravitricity Energy,2030,lifetime,50,years,Schmidt 2018
 Gravitricity Power,2030,investment,690,USD/kW,Schmidt 2018
 Gravitricity Power,2030,FOM,0.55,%/year,Schmidt 2018
 Gravitricity Power,2030,lifetime,50,years,Schmidt 2018
-Gravitricity Power,2030,efficiency,92.2,%,Schmidt 2018
+Gravitricity Power,2030,efficiency,0.922,per unit charge/discharge,Schmidt 2018
 Flow Battery Energy,2030,investment,260,EUR/kWh,
 Flow Battery Energy,2030,FOM,0,%/year,
 Flow Battery Energy,2030,lifetime,20,years,
-Flow Battery Power,2030,efficiency,89.4,%,
+Flow Battery Power,2030,efficiency,0.894,per unit charge/discharge,
 Flow Battery Power,2030,investment,770,EUR/kW,
 Flow Battery Power,2030,FOM,2.2,%/year,
 Flow Battery Power,2030,lifetime,20,years,
@@ -213,4 +213,4 @@ Thermal Battery Energy,2030,lifetime,20,years,
 Thermal Battery Power,2030,investment,450,EUR/kW,
 Thermal Battery Power,2030,FOM,0,%/year,
 Thermal Battery Power,2030,lifetime,20,years,
-Thermal Battery Power,2030,efficiency,84,%,
+Thermal Battery Power,2030,efficiency,0.84,per unit charge/discharge,

@@ -17,7 +17,7 @@ scenario:
   clusters: [5]
   opts: [Co2L-1H]
 
-countries: ['GB']
+countries: ['DE']
 
 snapshots:
   start: "2013-01-01"
@@ -42,7 +42,7 @@ electricity:
   extendable_carriers:
     Generator: []
     StorageUnit: [] # battery, H2
-    Store: [battery, H2, gravitricity, ptes, vrfb]
+    Store: [battery, H2, gravitricity] 
     Link: []
 
   max_hours:
@@ -54,7 +54,7 @@ electricity:
 
   powerplants_filter: false # use pandas query strings here, e.g. Country not in ['Germany']
   custom_powerplants: false # use pandas query strings here, e.g. Country in ['Germany']
-  conventional_carriers: [geothermal, biomass]
+  conventional_carriers: [geothermal, biomass, CCGT, OCGT]
   renewable_capacities_from_OPSD: [] # onwind, offwind, solar
 
   # estimate_renewable_capacities_from_capacity_stats:
@@ -205,6 +205,7 @@ costs:
     gravitricity: 0.
     ptes: 0.
     vrfb: 0.
+
   emission_prices: # in currency per tonne emission, only used with the option Ep
     co2: 0.
 
