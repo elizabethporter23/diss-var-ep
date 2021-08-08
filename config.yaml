@@ -13,8 +13,8 @@ summary_dir: results
 
 scenario:
   simpl: ['']
-  ll: ['copt']
-  clusters: [3]
+  ll: ['v1.25']
+  clusters: [16]
   opts: [Co2L-1H]
 
 countries: ['GB']
@@ -59,7 +59,7 @@ electricity:
 
   powerplants_filter: false # use pandas query strings here, e.g. Country not in ['Germany']
   custom_powerplants: false # use pandas query strings here, e.g. Country in ['Germany']
-  conventional_carriers: [geothermal, biomass, CCGT, OCGT]
+  conventional_carriers: [geothermal, biomass]
   renewable_capacities_from_OPSD: [] # onwind, offwind, solar
 
   # estimate_renewable_capacities_from_capacity_stats:
