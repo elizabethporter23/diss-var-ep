@@ -68,16 +68,42 @@ def attach_storageunits(n, costs):
     elec_opts = snakemake.config['electricity']
     carriers = elec_opts['extendable_carriers']['StorageUnit']
     max_hours = elec_opts['max_hours']
+    e_nom_maxs = elec_opts['e_nom_max']
 
     _add_missing_carriers_from_costs(n, costs, carriers)
 
     buses_i = n.buses.index
 
-    lookup_store = {"H2": "electrolysis", "battery": "battery inverter", "gravitricity":"Gravitricity Energy", "vrfb":"Flow Battery Energy","ptes":"Thermal Battery Energy"}
-    lookup_dispatch = {"H2": "fuel cell", "battery": "battery inverter", "gravitricity":"Gravitricity Power", "vrfb":"Flow Battery Power", "ptes":"Thermal Battery Power"}
+    lookup_store = {"H2": "electrolysis", "battery": "battery inverter", "gravitricity":"Gravitricity Energy", "vrfb":"Flow Battery Energy","ptes":"Thermal Battery Energy", "gravitricity_new":"Gravitricity New Build Power"}
+    lookup_dispatch = {"H2": "fuel cell", "battery": "battery inverter", "gravitricity":"Gravitricity Power", "vrfb":"Flow Battery Power", "ptes":"Thermal Battery Power", "gravitricity_new":"Gravitricity New Build Power"}
 
     for carrier in carriers:
-        n.madd("StorageUnit", buses_i, ' ' + carrier,
+        if carrier == 'gravitricity':
+               n.madd("StorageUnit", buses_i, ' ' + carrier,
+               bus=buses_i,
+               carrier=carrier,
+               p_nom_extendable=True,
+               capital_cost=costs.at[carrier, 'capital_cost'],
+               marginal_cost=costs.at[carrier, 'marginal_cost'],
+               p_nom_max=e_nom_maxs[carrier]/max_hours[carrier],
+               efficiency_store=costs.at[lookup_store[carrier], 'efficiency'],
+               efficiency_dispatch=costs.at[lookup_dispatch[carrier], 'efficiency'],
+               max_hours=max_hours[carrier],
+               cyclic_state_of_charge=True)  
+        elif carrier == 'ptes':
+               n.madd("StorageUnit", buses_i, ' ' + carrier,
+               bus=buses_i,
+               carrier=carrier,
+               p_nom_extendable=True,
+               capital_cost=costs.at[carrier, 'capital_cost'],
+               marginal_cost=costs.at[carrier, 'marginal_cost'],
+               standing_loss=costs.at['Thermal Battery Energy','standing_loss'],
+               efficiency_store=costs.at[lookup_store[carrier], 'efficiency'],
+               efficiency_dispatch=costs.at[lookup_dispatch[carrier], 'efficiency'],
+               max_hours=max_hours[carrier],
+               cyclic_state_of_charge=True)  
+        else:
+               n.madd("StorageUnit", buses_i, ' ' + carrier,
                bus=buses_i,
                carrier=carrier,
                p_nom_extendable=True,
@@ -164,7 +190,8 @@ def attach_stores(n, costs):
                e_cyclic=True,
                e_nom_extendable=True,
                capital_cost=costs.at['Gravitricity Energy', 'capital_cost'],
-               marginal_cost=costs.at["gravitricity", "marginal_cost"])
+               marginal_cost=costs.at["gravitricity", "marginal_cost"],
+               e_nom_max=elec_opts['e_nom_max']['gravitricity'])
 
         n.madd("Link", g_buses_i + " charger",
                bus0=buses_i,
@@ -193,7 +220,8 @@ def attach_stores(n, costs):
                e_nom_extendable=True,
                capital_cost=costs.at['Thermal Battery Energy', 'capital_cost'],
                marginal_cost=costs.at["ptes", "marginal_cost"],
-               efficiency = costs.at['Thermal Battery Energy', 'efficiency'])
+               efficiency = costs.at['Thermal Battery Energy', 'efficiency'],
+               standing_loss=costs.at['Thermal Battery Energy','standing_loss'])
 
         n.madd("Link", t_buses_i + " charger",
                bus0=buses_i,
@@ -239,6 +267,34 @@ def attach_stores(n, costs):
                efficiency=costs.at['Flow Battery Power','efficiency'],
                p_nom_extendable=True,
                marginal_cost=costs.at["vrfb", "marginal_cost"])
+
+    if 'gravitricity_new' in carriers:
+        g2_buses_i = n.madd("Bus", buses_i + " gravitricity_new", carrier="gravitricity_new", **bus_sub_dict)
+
+        n.madd("Store", g2_buses_i,
+               bus=g2_buses_i,
+               carrier='gravitricity_new',
+               e_cyclic=True,
+               e_nom_extendable=True,
+               capital_cost=costs.at['Gravitricity New Build Energy', 'capital_cost'],
+               marginal_cost=costs.at["gravitricity_new", "marginal_cost"])
+
+        n.madd("Link", g2_buses_i + " charger",
+               bus0=buses_i,
+               bus1=g2_buses_i,
+               carrier='gravitricity_new charger',
+               efficiency=costs.at['Gravitricity New Build Power', 'efficiency'],
+               capital_cost=costs.at['Gravitricity New Build Power', 'capital_cost'],
+               p_nom_extendable=True,
+               marginal_cost=costs.at["gravitricity_new", "marginal_cost"])
+
+        n.madd("Link", g2_buses_i + " discharger",
+               bus0=g2_buses_i,
+               bus1=buses_i,
+               carrier='gravitricity_new discharger',
+               efficiency=costs.at['Gravitricity New Build Power','efficiency'],
+               p_nom_extendable=True,
+               marginal_cost=costs.at["gravitricity_new", "marginal_cost"])
 
 
 def attach_hydrogen_pipelines(n, costs):

@@ -191,6 +191,10 @@ def load_costs(Nyears=1., tech_costs=None, config=None, elec_config=None):
         costs_for_storage(costs.loc["Flow Battery Energy"], costs.loc["Flow Battery Power"],
                           max_hours=max_hours['vrfb'])
 
+    costs.loc["gravitricity_new"] = \
+        costs_for_storage(costs.loc["Gravitricity New Build Energy"], costs.loc["Gravitricity New Build Power"], 
+                          max_hours=max_hours["gravitricity_new"])
+
 
     for attr in ('marginal_cost', 'capital_cost'):
         overwrites = config.get(attr)

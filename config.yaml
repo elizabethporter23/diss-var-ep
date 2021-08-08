@@ -14,7 +14,7 @@ summary_dir: results
 scenario:
   simpl: ['']
   ll: ['copt']
-  clusters: [16]
+  clusters: [3]
   opts: [Co2L-1H]
 
 countries: ['GB']
@@ -41,16 +41,21 @@ electricity:
 
   extendable_carriers:
     Generator: []
-    StorageUnit: [] # battery, H2
-    Store: [battery, H2, gravitricity, ptes, vrfb] 
+    StorageUnit: [battery, H2, vrfb, gravitricity, ptes, gravitricity_new] # battery, H2
+    Store: [] 
     Link: []
 
   max_hours:
     battery: 6
     H2: 168
     gravitricity: 2.44
+    gravitricity_new: 2.44
     vrfb: 6
     ptes: 10
+
+  e_nom_max:
+    gravitricity: 5 #UK only estimate
+
 
   powerplants_filter: false # use pandas query strings here, e.g. Country not in ['Germany']
   custom_powerplants: false # use pandas query strings here, e.g. Country in ['Germany']
@@ -255,7 +260,7 @@ plotting:
 
   vre_techs: ["onwind", "offwind-ac", "offwind-dc", "solar", "ror"]
   conv_techs: ["OCGT", "CCGT", "Nuclear", "Coal"]
-  storage_techs: ["hydro+PHS", "battery", "H2", "gravitricity", "ptes", "vrfb"]
+  storage_techs: ["hydro+PHS", "battery", "H2", "gravitricity", "gravitricity_new", "ptes", "vrfb"]
   load_carriers: ["AC load"]
   AC_carriers: ["AC line", "AC transformer"]
   link_carriers: ["DC line", "Converter AC-DC"]
@@ -295,6 +300,7 @@ plotting:
     "hydrogen storage" : "#ea048a"
     "battery" : "#b8ea04"
     "gravitricity" : "#b8ea04"
+    "gravitricity_new" : "#b8ea04"
     "ptes" : "#ea048a"
     "vrfb" : "#ea048a"
     "Electric load" : "#f9d002"
@@ -318,6 +324,7 @@ plotting:
     hydro: "Reservoir & Dam"
     battery: "Battery Storage"
     gravitricity: "Gravity Storage"
+    gravitricity_new: "New Build Gravity Storage"
     H2: "Hydrogen Storage"
     lines: "Transmission Lines"
     ror: "Run of River"
