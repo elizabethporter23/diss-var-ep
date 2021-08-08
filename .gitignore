@@ -18,6 +18,8 @@ gurobi.log
 /notebooks
 /data/bundle
 /cutouts
+/data/costs.csv
+/config.yaml
 
 doc/_build
 
