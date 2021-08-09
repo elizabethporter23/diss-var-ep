@@ -178,8 +178,7 @@ def attach_stores(n, costs):
                e_cyclic=True,
                e_nom_extendable=True,
                capital_cost=costs.at['Gravitricity Energy', 'capital_cost'],
-               marginal_cost=costs.at["gravitricity", "marginal_cost"],
-               e_nom_max=elec_opts['e_nom_max']['gravitricity'])
+               marginal_cost=costs.at["gravitricity", "marginal_cost"])
 
         n.madd("Link", g_buses_i + " charger",
                bus0=buses_i,
