@@ -19,7 +19,7 @@ gurobi.log
 /data/bundle
 /cutouts
 /data/costs.csv
-/config.yaml
+config.yaml
 
 doc/_build
 
